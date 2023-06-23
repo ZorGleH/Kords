@@ -1,30 +1,27 @@
 // Ignore TS errors, as we want to test the error message
 // @ts-nocheck
-import { getFrequencyFromNote } from "./notes";
+
+// Note frequencies from https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies
+
+import { getFrequencyFromNote, getNoteFromFrequency } from "./notes";
 
 describe("getFrequencyFromNote", () => {
   it("should return the correct frequency for 3 different notes on the same octave", () => {
-    expect(getFrequencyFromNote("A4")).toBe(440);
-    expect(getFrequencyFromNote("B4")).toBe(493.88);
-    expect(getFrequencyFromNote("C4")).toBe(261.63);
-  });
-
-  it("should return the correct frequency for the same note on 3 different octaves", () => {
-    expect(getFrequencyFromNote("A3")).toBe(220);
-    expect(getFrequencyFromNote("A5")).toBe(880);
-    expect(getFrequencyFromNote("A6")).toBe(1760);
-  });
-
-  it("should return the correct frequency for 4 different accidental notes (2 sharp and 2 flat)", () => {
-    expect(getFrequencyFromNote("A#4")).toBe(466.16);
-    expect(getFrequencyFromNote("Bb4")).toBe(466.16);
-    expect(getFrequencyFromNote("C#4")).toBe(277.18);
-    expect(getFrequencyFromNote("Db4")).toBe(277.18);
-  });
-
-  it("should return the correct frequency for edge cases lowest and highest notes", () => {
     expect(getFrequencyFromNote("C0")).toBe(16.35);
-    expect(getFrequencyFromNote("G10")).toBe(25087.71);
+    expect(getFrequencyFromNote("C#1")).toBe(34.65);
+    expect(getFrequencyFromNote("Db1")).toBe(34.65);
+    expect(getFrequencyFromNote("D#3")).toBe(155.56);
+    expect(getFrequencyFromNote("Eb3")).toBe(155.56);
+    expect(getFrequencyFromNote("E4")).toBe(329.63);
+    expect(getFrequencyFromNote("F5")).toBe(698.46);
+    expect(getFrequencyFromNote("F#6")).toBe(1479.98);
+    expect(getFrequencyFromNote("Gb6")).toBe(1479.98);
+    expect(getFrequencyFromNote("G7")).toBe(3135.96);
+    expect(getFrequencyFromNote("G#8")).toBe(6644.88);
+    expect(getFrequencyFromNote("Ab8")).toBe(6644.88);
+    expect(getFrequencyFromNote("A9")).toBe(14080.0);
+    expect(getFrequencyFromNote("A#10")).toBe(29834.48);
+    expect(getFrequencyFromNote("Bb10")).toBe(29834.48);
   });
 
   it("should throw an error if the note is invalid", () => {
@@ -39,5 +36,20 @@ describe("getFrequencyFromNote", () => {
     expect(() => getFrequencyFromNote("A#")).toThrow(errorMessage);
     expect(() => getFrequencyFromNote("A#-1")).toThrow(errorMessage);
     expect(() => getFrequencyFromNote("A#12")).toThrow(errorMessage);
+  });
+});
+
+describe("getNoteFromFrequency", () => {
+  it("should return the correct note for a given frequency", () => {
+    expect(getNoteFromFrequency(16.35)).toBe("C0");
+    expect(getNoteFromFrequency(34.65)).toBe("C#1");
+    expect(getNoteFromFrequency(155.56)).toBe("D#3");
+    expect(getNoteFromFrequency(329.63)).toBe("E4");
+    expect(getNoteFromFrequency(698.46)).toBe("F5");
+    expect(getNoteFromFrequency(1479.98)).toBe("F#6");
+    expect(getNoteFromFrequency(3135.96)).toBe("G7");
+    expect(getNoteFromFrequency(6644.88)).toBe("G#8");
+    expect(getNoteFromFrequency(14080.0)).toBe("A9");
+    expect(getNoteFromFrequency(29834.48)).toBe("A#10");
   });
 });

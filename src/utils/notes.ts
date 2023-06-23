@@ -25,7 +25,7 @@ const notes: { [key: string]: number } = {
 type Note = keyof typeof notes;
 
 // Return a frequency for a given note, based on A4 value
-export const getFrequencyFromNote = (
+const getFrequencyFromNote = (
   note: `${Note}${"#" | "b" | ""}${number}`
 ): number | void => {
   const noteRegex = /^([A-G][b#]?)([0-9]|10)$/;
@@ -49,3 +49,23 @@ export const getFrequencyFromNote = (
   // according to the formula: frequency = 2^(n/12) * 440 Hz
   return Math.round(A4 * Math.pow(2, (distanceFromA4 - 9) / 12) * 100) / 100;
 };
+
+// Return a note for a given frequency
+const getNoteFromFrequency = (frequency: number): string | void => {
+  const distanceFromA4 = Math.round(
+    12 * (Math.log(frequency / A4) / Math.log(2)) + 9
+  );
+
+  // octave is the distance from A4 to the note, between 0 and 10
+  const octave = Math.floor(distanceFromA4 / 12) + 4;
+
+  // index is the distance from the note to the closest A, between 0 and 11
+  const index = ((distanceFromA4 % 12) + 12) % 12;
+
+  // Find the note name from the index
+  const noteName = Object.keys(notes).find((key) => notes[key] === index);
+
+  return `${noteName}${octave}`;
+};
+
+export { getFrequencyFromNote, getNoteFromFrequency };
