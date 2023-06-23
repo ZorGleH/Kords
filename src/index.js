@@ -3,4 +3,4 @@ import App from "./App";
 
 const container = document.getElementById("app");
 const root = createRoot(container);
-root.render(<App title="Kords" />);
+root.render(<App />);
