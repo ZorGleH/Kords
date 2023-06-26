@@ -1,11 +1,22 @@
-import { Note, Degree, Frequency, Octave, Accidental } from "./models";
+import {
+  Note,
+  Degree,
+  Frequency,
+  Octave,
+  Accidental,
+  NOTE_REGEX,
+} from "./models";
 import { A4, MIN_OCTAVE, MAX_OCTAVE, NOTES } from "./models";
 
-// Return a frequency for a given note, based on A4 value
-const getFrequencyFromNote = (note: Note): Frequency | void => {
-  const noteRegex = /^([A-G][b#]?)([0-9]|10)$/;
+// Compute index and octave from a note
+const getNoteIndexAndOctave = (note: Note): [number, number] => {
+  const [, noteName, _octave] = note.match(NOTE_REGEX) as RegExpMatchArray;
+  return [NOTES[noteName], parseInt(_octave)];
+};
 
-  if (!noteRegex.test(note)) {
+// Return a frequency for a given note, based on A4 value
+const getFrequencyFromNote = (note: Note): Frequency => {
+  if (!NOTE_REGEX.test(note)) {
     throw new Error(
       `Invalid note, should begin with one of the following: ${Object.keys(
         NOTES
@@ -14,10 +25,7 @@ const getFrequencyFromNote = (note: Note): Frequency | void => {
       )}, followed by an octave between ${MIN_OCTAVE} and ${MAX_OCTAVE}`
     );
   }
-  const [, noteName, _octave] = note.match(noteRegex) as RegExpMatchArray;
-
-  const index = NOTES[noteName];
-  const octave = parseInt(_octave);
+  const [index, octave] = getNoteIndexAndOctave(note);
   const distanceFromA4 = (octave - 4) * 12 + index;
 
   // Compute frequency based on the note name and octave, rounded to 2 decimals,
@@ -45,4 +53,16 @@ const getNoteFromFrequency = (frequency: Frequency): Note => {
   return `${noteName}${octave}`;
 };
 
-export { getFrequencyFromNote, getNoteFromFrequency };
+// Return a HSL color for a given note
+// H is computed from the note index (C = 0, C# = 1, D = 2, ..., B = 11)
+// S is computed from the octave
+// L is computed from the octave
+const getHSLFromNote = (note: Note): string | undefined => {
+  const [index, octave] = getNoteIndexAndOctave(note);
+  const hue = Math.round((index / 12) * 360);
+  const saturation = 100 - Math.abs(5 - octave) * 5;
+  const lightness = 50 - (5 - octave) * 3;
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+};
+
+export { getFrequencyFromNote, getNoteFromFrequency, getHSLFromNote };

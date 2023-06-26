@@ -3,7 +3,11 @@
 
 // Note frequencies from https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies
 
-import { getFrequencyFromNote, getNoteFromFrequency } from "./notes";
+import {
+  getFrequencyFromNote,
+  getNoteFromFrequency,
+  getHSLFromNote,
+} from "./notes";
 
 describe("getFrequencyFromNote", () => {
   it("should return the correct frequency for 3 different notes on the same octave", () => {
@@ -51,5 +55,26 @@ describe("getNoteFromFrequency", () => {
     expect(getNoteFromFrequency(6644.88)).toBe("G#8");
     expect(getNoteFromFrequency(14080.0)).toBe("A9");
     expect(getNoteFromFrequency(29834.48)).toBe("A#10");
+  });
+});
+
+describe("getHSLFromNote", () => {
+  it("should return the correct HSL color for a given note", () => {
+    expect(getHSLFromNote("C0")).toBe("hsl(0, 100%, 50%)");
+    expect(getHSLFromNote("C#1")).toBe("hsl(30, 100%, 50%)");
+    expect(getHSLFromNote("Db1")).toBe("hsl(30, 100%, 50%)");
+    expect(getHSLFromNote("D#3")).toBe("hsl(90, 100%, 50%)");
+    expect(getHSLFromNote("Eb3")).toBe("hsl(90, 100%, 50%)");
+    expect(getHSLFromNote("E4")).toBe("hsl(120, 100%, 50%)");
+    expect(getHSLFromNote("F5")).toBe("hsl(150, 100%, 50%)");
+    expect(getHSLFromNote("F#6")).toBe("hsl(180, 100%, 50%)");
+    expect(getHSLFromNote("Gb6")).toBe("hsl(180, 100%, 50%)");
+    expect(getHSLFromNote("G7")).toBe("hsl(210, 100%, 50%)");
+    expect(getHSLFromNote("G#8")).toBe("hsl(240, 100%, 50%)");
+    expect(getHSLFromNote("Ab8")).toBe("hsl(240, 100%, 50%)");
+    expect(getHSLFromNote("A9")).toBe("hsl(270, 100%, 50%)");
+    expect(getHSLFromNote("A#10")).toBe("hsl(300, 100%, 50%)");
+    expect(getHSLFromNote("Bb10")).toBe("hsl(300, 100%, 50%)");
+    expect(getHSLFromNote("B10")).toBe("hsl(330, 100%, 50%)");
   });
 });

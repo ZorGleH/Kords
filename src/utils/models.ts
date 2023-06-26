@@ -1,16 +1,27 @@
-type Degree = "A" | "B" | "C" | "D" | "E" | "F" | "G";
+// Degrees
+const DEGREES = ["A", "B", "C", "D", "E", "F", "G"] as const;
+type Degree = (typeof DEGREES)[number];
 
-type Accidental = "#" | "b" | "";
+// Accidentals
+const ACCIDENTALS = ["#", "b", ""] as const;
+type Accidental = (typeof ACCIDENTALS)[number];
 
-type Octave = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+// Octaves
+const OCTAVES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
+const MIN_OCTAVE = OCTAVES.slice(0, 1)[0];
+const MAX_OCTAVE = OCTAVES.slice(-1)[0];
+type Octave = (typeof OCTAVES)[number];
 
+// Compound note type
 type Note = `${Degree}${Accidental}${Octave}`;
 
+// Frequency type
 type Frequency = number;
 
+// A4 reference value
 const A4 = 440;
-const MIN_OCTAVE = 0;
-const MAX_OCTAVE = 10;
+
+// Note values
 const NOTES: { [key: string]: number } = {
   C: 0,
   "C#": 1,
@@ -31,5 +42,16 @@ const NOTES: { [key: string]: number } = {
   B: 11,
 };
 
+const NOTE_REGEX = /^([A-G][b#]?)([0-9]|10)$/;
+
 export type { Note, Degree, Octave, Accidental, Frequency };
-export { A4, MIN_OCTAVE, MAX_OCTAVE, NOTES };
+export {
+  A4,
+  MIN_OCTAVE,
+  MAX_OCTAVE,
+  NOTES,
+  DEGREES,
+  ACCIDENTALS,
+  OCTAVES,
+  NOTE_REGEX,
+};
